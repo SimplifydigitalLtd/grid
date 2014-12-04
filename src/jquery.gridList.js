@@ -67,13 +67,18 @@
         },
 
         dragAndDrop: function (enabled) {
-            if (enabled) {
-                if (!this.options.dragAndDrop) {
+            if (!this.options.dragAndDrop) {
+
+                if (enabled) {
                     this.options.dragAndDrop = true;
                     this.$items.draggable(this.draggableOptions);
-                }else {
-                    this.$items.draggable('enable');
                 }
+
+                return;
+            }
+
+            if (enabled) {
+                this.$items.draggable('enable');
             } else {
                 this.$items.draggable('disable');
             }
