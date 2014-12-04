@@ -50,7 +50,13 @@
 
         resizeItem: function (element, newSize) {
             this._createGridSnapshot();
-            this.gridList.resizeItem(this._getItemByElement(element), newSize);
+            var item = this._getItemByElement(element);
+
+            if (item == undefined){
+                throw 'Cannot resize element not in grid.'
+            }
+
+            this.gridList.resizeItem(item, newSize);
             this._updateGridSnapshot();
 
             this.render();
@@ -98,7 +104,7 @@
         _init: function () {
             // Read items and their meta data. Ignore other list elements (like the
             // position highlight)
-            this.$items = this.$element.children('li[data-w]');
+            this.$items = this.$element.children();
             this.items = this._generateItemsFromDOM();
             // Used to highlight a position an element will land on upon drop
             this.$positionHighlight = this.$element.find('.position-highlight').hide();
