@@ -188,8 +188,8 @@ GridList.prototype = {
     this._resolveCollisions(item);
   },
 
-  resizeItem: function(item, width) {
-    this._updateItemSize(item, width);
+  resizeItem: function(item, newSize) {
+    this._updateItemSize(item, newSize);
     this._resolveCollisions(item);
   },
 
@@ -297,12 +297,20 @@ GridList.prototype = {
     this._markItemPositionToGrid(item);
   },
 
-  _updateItemSize: function(item, width) {
+  _updateItemSize: function(item, newSize) {
     // TODO: Implement height change
     if (item.x !== null && item.y !== null) {
       this._deleteItemPositionFromGrid(item);
     }
-    item.w = width;
+
+    if (newSize.height != undefined){
+      item.h = newSize.height;
+    }
+
+    if (newSize.width != undefined) {
+      item.w = newSize.width;
+    }
+
     this._markItemPositionToGrid(item);
   },
 
