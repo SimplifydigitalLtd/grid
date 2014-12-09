@@ -46,8 +46,7 @@
       }
     }
     this.items = items;
-    this._adjustHeightOfItems();
-    this.generateGrid();
+    this.resizeGrid(this.options.rows);
   };
 
   GridList.cloneItems = function(items, _items) {
@@ -127,7 +126,7 @@
       var i;
       this._resetGrid();
       for (i = 0; i < this.items.length; i++) {
-        this._markItemPositionToGrid(this.items[i]);
+          this._markItemPositionToGrid(this.items[i]);
       }
     },
 

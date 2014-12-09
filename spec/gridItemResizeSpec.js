@@ -124,31 +124,4 @@ describe("Grid item resizing", function () {
             expect(grid.items).toEqualPositions(expectedItems);
         });
     });
-
-    describe("a 1x1 widget into a 1x2 widget", function () {
-        var fixture = fixtures.GRID2.rows3,
-            item,
-            grid;
-
-        grid = new GridList(GridList.cloneItems(fixture), {rows: 3});
-        item = grid.items[4];
-        helpers.addIndexesToItems(grid.items);
-        it('should push items on row below along their row', function () {
-            grid.resizeItem(item, {h: 2});
-            helpers.sortItemsByIndex(grid.items);
-
-            var expectedItems = GridList.cloneItems(fixture);
-            expectedItems[5] = {x: 4, y: 1};
-            expectedItems[9] = {x: 6, y: 1};
-            expectedItems[11] = {x: 7, y: 1};
-            expectedItems[13] = {x: 9, y: 0};
-            expectedItems[14] = {x: 10, y: 0};
-            expectedItems[15] = {x: 10, y: 1};
-            expectedItems[16] = {x: 10, y: 2};
-
-            expect(grid.items).toEqualPositions(expectedItems);
-
-        });
-    });
-
 });

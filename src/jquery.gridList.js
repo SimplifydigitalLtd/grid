@@ -112,6 +112,7 @@
             // Used to highlight a position an element will land on upon drop
             this.$positionHighlight = this.$element.find('.position-highlight').hide();
 
+            this.options.rows = this._calculateRowNumber();
             this._initGridList();
             this.reflow();
 
@@ -230,12 +231,48 @@
             }
         },
 
-        _calculateCellSize: function () {
-            this._cellHeight = Math.floor(this.$element.height() / this.options.rows);
-            this._cellWidth = this._cellHeight * this.options.widthHeightRatio;
-            if (this.options.heightToFontSizeRatio) {
-                this._fontSize = this._cellHeight * this.options.heightToFontSizeRatio;
+        _calculateRowNumber : function() {
+            if (this.options.minHeight){
+                var gridHeight = this.$element.height(),
+                    currentRowNumber = 0,
+                    currentCellHeight = 0;
+
+                if (!this.options.maxRowCount){
+                    this.options.maxRowCount = 3;
+                }
+
+                while ((currentRowNumber == 0 || currentCellHeight > this.options.minHeight) && currentRowNumber <= this.options.maxRowCount){
+                    currentRowNumber++;
+                    currentCellHeight = Math.floor(gridHeight/currentRowNumber);
+                }
+
+                return currentRowNumber;
             }
+
+            return this.options.rows
+        },
+
+        _calculateCellSize: function () {
+            var newRowCount = this._calculateRowNumber();
+
+            if (newRowCount != this.options.rows)
+            {
+                this.options.rows = newRowCount;
+                this.gridList.resizeGrid(newRowCount)
+            }
+
+            this._cellHeight = Math.floor(this.$element.height() / this.options.rows);
+
+            if (this.options.sizingMode == 'fixedWidth')
+            {
+                this._cellWidth = this.options.cellWidth;
+            } else {
+                this._cellWidth = this._cellHeight * this.options.widthHeightRatio;
+                if (this.options.heightToFontSizeRatio) {
+                    this._fontSize = this._cellHeight * this.options.heightToFontSizeRatio;
+                }
+            }
+
         },
 
         _getItemWidth: function (item) {
