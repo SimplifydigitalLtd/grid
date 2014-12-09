@@ -9,12 +9,13 @@
     }
 }(function ($, GridList) {
 
-    var DraggableGridList = function (element, options, draggableOptions) {
+    var DraggableGridList = function (element, sizes, options, draggableOptions) {
         this.options = $.extend({}, this.defaults, options);
         this.draggableOptions = $.extend(
             {}, this.draggableDefaults, draggableOptions);
 
         this.$element = $(element);
+        this.sizes = sizes;
         this._init();
         this._bindEvents();
     };
@@ -77,16 +78,16 @@
 
                 if (enabled) {
                     this.options.dragAndDrop = true;
-                    this.$items.draggable(this.draggableOptions);
+                    this.$items.parent().draggable(this.draggableOptions);
                 }
 
                 return;
             }
 
             if (enabled) {
-                this.$items.draggable('enable');
+                this.$items.parent().draggable('enable');
             } else {
-                this.$items.draggable('disable');
+                this.$items.parent().draggable('disable');
             }
         },
 
@@ -105,7 +106,9 @@
             // Read items and their meta data. Ignore other list elements (like the
             // position highlight)
             this.$items = this.$element.children();
+            this.$items.not('.gridItem').wrap('<div class="gridItem"></div>');
             this.items = this._generateItemsFromDOM();
+
             // Used to highlight a position an element will land on upon drop
             this.$positionHighlight = this.$element.find('.position-highlight').hide();
 
@@ -129,15 +132,15 @@
             this._onStart = this._bindMethod(this._onStart);
             this._onDrag = this._bindMethod(this._onDrag);
             this._onStop = this._bindMethod(this._onStop);
-            this.$items.on('dragstart', this._onStart);
-            this.$items.on('drag', this._onDrag);
-            this.$items.on('dragstop', this._onStop);
+            this.$items.parent().on('dragstart', this._onStart);
+            this.$items.parent().on('drag', this._onDrag);
+            this.$items.parent().on('dragstop', this._onStop);
         },
 
         _unbindEvents: function () {
-            this.$items.off('dragstart', this._onStart);
-            this.$items.off('drag', this._onDrag);
-            this.$items.off('dragstop', this._onStop);
+            this.$items.parent().off('dragstart', this._onStart);
+            this.$items.parent().off('drag', this._onDrag);
+            this.$items.parent().off('dragstop', this._onStop);
         },
 
         _onStart: function (event, ui) {
@@ -197,12 +200,20 @@
                 items = [],
                 item;
             this.$items.each(function (i, element) {
+                var itemSizeAttribute = $(element).attr('data-size');
+
+                var itemSize = _this.sizes[itemSizeAttribute];
+
+                if (itemSize == undefined){
+                    itemSize = _this.sizes[0];
+                }
+
                 items.push({
-                    $element: $(element),
+                    $element: $(element).parent(),
                     x: Number($(element).attr('data-x')),
                     y: Number($(element).attr('data-y')),
-                    w: Number($(element).attr('data-w')),
-                    h: Number($(element).attr('data-h')),
+                    w: Number(itemSize.w),
+                    h: Number(itemSize.h),
                     id: Number($(element).attr('data-id'))
                 });
             });
@@ -243,7 +254,7 @@
                 });
             }
             if (this.options.heightToFontSizeRatio) {
-                this.$items.css('font-size', this._fontSize);
+                this.$items.parent().css('font-size', this._fontSize);
             }
         },
 
@@ -261,7 +272,7 @@
             }
             // Update the width of the entire grid container with an extra column on
             // the right for extra dragging room
-            this.$element.width((this.gridList.grid.length + 1) * this._cellWidth);
+            //this.$element.width((this.gridList.grid.length + 1) * this._cellWidth);
         },
 
         _dragPositionChanged: function (newPosition) {

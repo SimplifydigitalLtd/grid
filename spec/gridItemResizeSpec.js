@@ -25,7 +25,7 @@ describe("Grid item resizing", function () {
         helpers.addIndexesToItems(grid.items);
 
         it("should move all three 1x1 widgets to right", function () {
-            grid.resizeItem(item, {width: 3});
+            grid.resizeItem(item, {w: 3});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
@@ -37,7 +37,7 @@ describe("Grid item resizing", function () {
         });
 
         it("should move all three 1x1 widgets back to left", function () {
-            grid.resizeItem(item, {width: 1});
+            grid.resizeItem(item, {w: 1});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
@@ -59,7 +59,7 @@ describe("Grid item resizing", function () {
         helpers.addIndexesToItems(grid.items);
 
         it("should pull next widgets from its row to left", function () {
-            grid.resizeItem(item, {width: 1});
+            grid.resizeItem(item, {w: 1});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
@@ -72,7 +72,7 @@ describe("Grid item resizing", function () {
         });
 
         it("should push next widgets from its row back to right", function () {
-            grid.resizeItem(item, {width: 2});
+            grid.resizeItem(item, {w: 2});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
@@ -95,7 +95,7 @@ describe("Grid item resizing", function () {
         helpers.addIndexesToItems(grid.items);
 
         it("should pull next widgets from its row to left", function () {
-            grid.resizeItem(item, {width: 3});
+            grid.resizeItem(item, {w: 3});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
@@ -110,7 +110,7 @@ describe("Grid item resizing", function () {
         });
 
         it("should push next widgets from its row back to right", function () {
-            grid.resizeItem(item, {width: 2});
+            grid.resizeItem(item, {w: 2});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
@@ -134,7 +134,7 @@ describe("Grid item resizing", function () {
         item = grid.items[4];
         helpers.addIndexesToItems(grid.items);
         it('should push items on row below along their row', function () {
-            grid.resizeItem(item, {height: 2});
+            grid.resizeItem(item, {h: 2});
             helpers.sortItemsByIndex(grid.items);
 
             var expectedItems = GridList.cloneItems(fixture);
